@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lune Beauty – AI Skin App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/app.css" />
+</head>
+<body>
+  <div id="step1" class="step active">
+    <div class="camera-wrap">
+      <video id="video" playsinline autoplay muted></video>
+      <div class="face-oval"></div>
+      <div class="controls">
+        <button id="btnStart" class="gold-btn" data-i18n="app.start">Kamera starten</button>
+        <button id="btnFlip" class="gold-btn" style="display:none" data-i18n="app.flip">Wechseln</button>
+        <button id="btnCapture" class="gold-btn" data-i18n="app.capture">Aufnehmen</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="step2" class="step">
+    <div class="result-card">
+      <h2 data-i18n="app.analysis">Analyse</h2>
+      <div class="gauge" id="gauge"></div>
+      <p id="summary"></p>
+      <button id="toStep3" class="gold-btn" data-i18n="app.continue">Weiter</button>
+    </div>
+  </div>
+
+  <div id="step3" class="step">
+    <div class="form-card">
+      <h2 data-i18n="app.details">Details</h2>
+      <label data-i18n="app.name">Name</label><input id="name" />
+      <label style="margin-top:10px" data-i18n="app.email">E‑Mail</label><input id="email" type="email" />
+      <div style="margin:14px 0">
+        <label><input type="radio" name="plan" value="Essential — 19€" checked /> <span data-i18n="app.p1">Essential — 19€</span></label>
+        <label style="margin-left:18px"><input type="radio" name="plan" value="Advanced — 49€" /> <span data-i18n="app.p2">Advanced — 49€</span></label>
+      </div>
+      <label>Prompt</label>
+      <textarea id="prompt" rows="8"></textarea>
+      <button id="submit" class="gold-btn" style="margin-top:12px" data-i18n="app.save">Speichern</button>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/i18n.js"></script>
+  <script type="module" src="assets/js/analysis.js"></script>
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lune Beauty – Your Luxury Experience</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body>
+  <nav class="top-nav" id="topNav">
+    <div class="nav-inner">
+      <div class="brand">
+        <img src="assets/img/Logo.png" alt="Lune Beauty" class="brand-logo" />
+      </div>
+      <ul class="nav-links">
+        <li><a href="#hero" data-i18n="nav.home">Home</a></li>
+        <li><a href="#services" data-i18n="nav.services">Leistungen</a></li>
+        <li><a href="#pricing" data-i18n="nav.pricing">Preise</a></li>
+        <li><a href="#team" data-i18n="nav.team">Team</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">Kontakt</a></li>
+        <li><a class="cta" href="app.html" data-i18n="nav.analysis">Skin Analysis</a></li>
+        <li class="lang-switch">
+          <button data-lang="de">DE</button>
+          <button data-lang="en">EN</button>
+          <button data-lang="fr">FR</button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <header id="hero" class="hero">
+    <div class="hero-texture" aria-hidden="true"></div>
+    <div class="hero-content">
+      <img src="assets/img/Logo.png" class="hero-logo" alt="Lune Beauty" />
+      <h1 class="hero-title" data-i18n="hero.title">Lune Beauty – Your Luxury Experience</h1>
+      <p class="hero-sub" data-i18n="hero.sub">Luxuriöse Behandlungen & moderne Hautanalyse.</p>
+      <a class="gold-btn" href="app.html" data-i18n="hero.cta">Jetzt Analyse starten</a>
+    </div>
+  </header>
+
+  <section id="services" class="section services">
+    <h2 class="section-title" data-i18n="services.title">Behandlungen & Services</h2>
+    <div class="grid-3x2">
+      <article class="service-card" data-target="acc-face">
+        <img src="assets/img/Gesichtsbehandlung.png" alt="Gesichtsbehandlung" />
+        <h3 data-i18n="services.face.title">Gesichtsbehandlung</h3>
+        <p data-i18n="services.face.desc">Luxuriöse Pflege für ein strahlendes Hautbild.</p>
+      </article>
+      <article class="service-card" data-target="acc-body">
+        <img src="assets/img/Körperbehandlung.png" alt="Körperbehandlung" />
+        <h3 data-i18n="services.body.title">Körperbehandlung</h3>
+        <p data-i18n="services.body.desc">Tiefe Reinigung und verfeinernde Pflege für Rücken & Körper.</p>
+      </article>
+      <article class="service-card" data-target="acc-massage">
+        <img src="assets/img/Massagen.png" alt="Massagen" />
+        <h3 data-i18n="services.massage.title">Massagen</h3>
+        <p data-i18n="services.massage.desc">Wohltuende Entspannung & Balance.</p>
+      </article>
+      <article class="service-card" data-target="acc-mani">
+        <img src="assets/img/Maniküre.png" alt="Maniküre" />
+        <h3 data-i18n="services.manicure.title">Maniküre</h3>
+        <p data-i18n="services.manicure.desc">Elegante Hand- & Nagelpflege.</p>
+      </article>
+      <article class="service-card" data-target="acc-eye">
+        <img src="assets/img/Augenpflege.png" alt="Augenpflege" />
+        <h3 data-i18n="services.eyes.title">Augenpflege</h3>
+        <p data-i18n="services.eyes.desc">Ausdrucksstarker Blick durch definierte Konturen.</p>
+      </article>
+      <article class="service-card" data-target="acc-feet">
+        <img src="assets/img/Fußpflege.png" alt="Fußpflege" />
+        <h3 data-i18n="services.feet.title">Fußpflege</h3>
+        <p data-i18n="services.feet.desc">Intensive Pflege für gesunde, entspannte Füße.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="pricing" class="section">
+    <h2 class="section-title" data-i18n="pricing.title">Preise</h2>
+    <details id="acc-face" class="acc"><summary data-i18n="pricing.face">Gesichtsbehandlung</summary>
+      <ul class="acc-list">
+        <li><strong data-i18n="pricing.items.face.basic.title">Basis‑Gesichtsbehandlung</strong><p data-i18n="pricing.items.face.basic.desc">Sanfte Reinigung, Peeling, Maske und Pflege.</p><div class="price">65 €</div></li>
+        <li><strong data-i18n="pricing.items.face.neck.title">Gesicht + Hals & Dekolleté</strong><p data-i18n="pricing.items.face.neck.desc">Erweiterte Intensivpflege für Gesicht & Dekolleté.</p><div class="price">81 €</div></li>
+      </ul>
+    </details>
+    <details id="acc-body" class="acc"><summary data-i18n="pricing.body">Körper & Rücken</summary>
+      <ul class="acc-list">
+        <li><strong data-i18n="pricing.items.body.back.title">Kosmetische Rückenbehandlung</strong><p data-i18n="pricing.items.body.back.desc">Reinigung, Peeling und Pflege.</p><div class="price">81 €</div></li>
+      </ul>
+    </details>
+    <details id="acc-massage" class="acc"><summary data-i18n="pricing.massage">Massagen</summary>
+      <ul class="acc-list">
+        <li><strong data-i18n="pricing.items.massage.per10.title">Massage (pro angefangene 10 Min.)</strong><p data-i18n="pricing.items.massage.per10.desc">Entspannende Massageeinheit nach Bedarf.</p><div class="price">15 €</div></li>
+        <li><strong data-i18n="pricing.items.massage.a30.title">Aroma‑Massage – 30 Min.</strong><p data-i18n="pricing.items.massage.a30.desc">Harmonische Entspannung mit Aromaölen.</p><div class="price">54 €</div></li>
+        <li><strong data-i18n="pricing.items.massage.a60.title">Aroma‑Massage – 60 Min.</strong><p data-i18n="pricing.items.massage.a60.desc">Tiefenentspannende Wellnessmassage.</p><div class="price">90 €</div></li>
+      </ul>
+    </details>
+    <details id="acc-mani" class="acc"><summary data-i18n="pricing.manicure">Maniküre</summary>
+      <ul class="acc-list">
+        <li><strong data-i18n="pricing.items.mani.spa.title">Spa Maniküre</strong><p data-i18n="pricing.items.mani.spa.desc">Luxuspflege mit Peeling, Maske und Massage.</p><div class="price">40 €</div></li>
+        <li><strong data-i18n="pricing.items.mani.classic.title">Klassische Maniküre</strong><p data-i18n="pricing.items.mani.classic.desc">Nagel- und Nagelhautpflege.</p><div class="price">35 €</div></li>
+      </ul>
+    </details>
+    <details id="acc-eye" class="acc"><summary data-i18n="pricing.eyes">Augenpflege</summary>
+      <ul class="acc-list">
+        <li><strong data-i18n="pricing.items.eyes.pluck.title">Augenbrauen zupfen</strong><p data-i18n="pricing.items.eyes.pluck.desc">Präzises Formen.</p><div class="price">15 €</div></li>
+        <li><strong data-i18n="pricing.items.eyes.tintb.title">Augenbrauen färben</strong><p data-i18n="pricing.items.eyes.tintb.desc">Langanhaltende Definition.</p><div class="price">15 €</div></li>
+        <li><strong data-i18n="pricing.items.eyes.tintl.title">Wimpern färben</strong><p data-i18n="pricing.items.eyes.tintl.desc">Natürlich betont.</p><div class="price">29 €</div></li>
+      </ul>
+    </details>
+    <details id="acc-feet" class="acc"><summary data-i18n="pricing.feet">Fußpflege</summary>
+      <ul class="acc-list">
+        <li><strong data-i18n="pricing.items.feet.basic.title">Basis Fußpflege</strong><p data-i18n="pricing.items.feet.basic.desc">Nagel- & Hornhautpflege.</p><div class="price">50 €</div></li>
+        <li><strong data-i18n="pricing.items.feet.spa.title">Spa Fußpflege</strong><p data-i18n="pricing.items.feet.spa.desc">Peeling und Massage.</p><div class="price">65 €</div></li>
+        <li><strong data-i18n="pricing.items.feet.coat.title">Lackieren: Unterlack & Überlack</strong><p data-i18n="pricing.items.feet.coat.desc">Lang anhaltender Glanz.</p><div class="price">15 €</div></li>
+      </ul>
+    </details>
+  </section>
+
+  <section id="team" class="section team">
+    <h2 class="section-title" data-i18n="team.title">Unser Team</h2>
+    <p class="centered" data-i18n="team.text">Bei Lune Beauty verbinden wir moderne Hautanalyse mit zeitloser Spa‑Ästhetik.</p>
+  </section>
+
+  <section id="contact" class="section contact">
+    <h2 class="section-title" data-i18n="contact.title">Kontakt & Öffnungszeiten</h2>
+    <div class="centered">
+      <p><strong data-i18n="contact.emailL">E‑Mail:</strong> kontakt@lune-beauty.example</p>
+      <p><strong data-i18n="contact.phoneL">Telefon:</strong> +49 160 000000</p>
+      <p><strong data-i18n="contact.addrL">Adresse:</strong> Musterstraße 1, 67547 Worms</p>
+      <div class="hours">
+        <p data-i18n="contact.h1">Mo–Fr: 10–18</p>
+        <p data-i18n="contact.h2">Sa: 10–16</p>
+        <p data-i18n="contact.h3">So/Feiertage: geschlossen</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">© <span id="year"></span> Lune Beauty — All Rights Reserved</footer>
+  <script type="module" src="assets/js/i18n.js"></script>
+  <script type="module" src="assets/js/ui.js"></script>
+  <script src="assets/js/global.js"></script>
+</body>
+</html>

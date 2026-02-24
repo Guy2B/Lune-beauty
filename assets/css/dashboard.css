@@ -1,0 +1,4 @@
+.dash{max-width:1100px;margin:40px auto;padding:0 20px}
+.table{width:100%;border-collapse:collapse;background:#fff;border:1px solid rgba(216,178,126,.35);border-radius:12px;overflow:hidden}
+.table th,.table td{padding:12px;border-bottom:1px solid #eee;text-align:left}
+.table tr:last-child td{border-bottom:none}

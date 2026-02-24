@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lune Beauty — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/dashboard.css" />
+</head>
+<body>
+  <div class="dash">
+    <h1>Lune Beauty — Dashboard</h1>
+    <table class="table" id="tbl">
+      <thead><tr><th data-i18n="dash.name">Name</th><th data-i18n="dash.email">E‑Mail</th><th data-i18n="dash.plan">Plan</th><th data-i18n="dash.ts">Zeitstempel</th><th>Prompt</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <button id="export" class="gold-btn" data-i18n="dash.export">CSV exportieren</button>
+  </div>
+  <script type="module" src="assets/js/i18n.js"></script>
+  <script type="module" src="assets/js/dashboard.js"></script>
+</body>
+</html>
