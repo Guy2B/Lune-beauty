@@ -1,4 +1,161 @@
-export async function analyze(img){ const c=document.createElement('canvas'); const w=img.naturalWidth||img.videoWidth||img.width; const h=img.naturalHeight||img.videoHeight||img.height; c.width=w; c.height=h; const ctx=c.getContext('2d'); ctx.drawImage(img,0,0,w,h); const data=ctx.getImageData(0,0,w,h).data; let sumR=0,sumG=0,sumL=0,bright=0,n=0,sumSq=0; for(let i=0;i<data.length;i+=4){const r=data[i],g=data[i+1],b=data[i+2];const l=.2126*r+.7152*g+.0722*b; sumL+=l; sumSq+=l*l; sumR+=r; sumG+=g; n++; if(l>220) bright++; } const meanL=sumL/n; const varL=sumSq/n-meanL*meanL; const redness=(sumR/n - sumG/n); const oil=bright/n; const poreProb=Math.min(1, Math.max(0, varL/8000)); const texture=Math.max(0, 1 - varL/12000); const redIdx=Math.min(1, Math.max(0, (redness-5)/60)); const oilBal=Math.min(1, Math.max(0, oil*5)); const pigment=Math.min(1, Math.max(0,(1-texture)*0.6+(meanL<100?0.2:0))); const score=Math.round((texture*.30+(1-redIdx)*.20+(1-Math.abs(oilBal-.5)*2)*.20+(1-poreProb)*.15+(1-pigment)*.15)*100); return {score, texture, redIdx, oilBal, poreProb, pigment}; }
-export function gauge(el,value){ const R=100, C=2*Math.PI*R; el.innerHTML=`<svg width="240" height="240" viewBox="0 0 240 240"><circle cx="120" cy="120" r="100" stroke="#eee" stroke-width="14" fill="none"/><circle id="arc" cx="120" cy="120" r="100" stroke="var(--gold)" stroke-width="14" stroke-linecap="round" fill="none" stroke-dasharray="${C}" stroke-dashoffset="${C}"></circle></svg><div class=score>${value}</div>`; const arc=el.querySelector('#arc'); requestAnimationFrame(()=>{arc.style.transition='stroke-dashoffset .9s ease'; arc.style.strokeDashoffset=String(C*(1-value/100));}); }
-export function summarize(m){ return `Die Haut zeigt eine ${m.texture>0.6?'gleichmäßige':'leicht unruhige'} Textur. Rötung ist ${m.redIdx>0.5?'sichtbar':'mild'}. Der Ölhaushalt wirkt ${m.oilBal>0.55?'erhöht':(m.oilBal<0.45?'reduziert':'ausgeglichen')}. Poren sind ${m.poreProb>0.5?'betont':'fein'}; Pigmentierung ${m.pigment>0.5?'wahrscheinlich':'gering'}.`; }
-export function buildPromptV2(user,m){ const L=(k,v)=>`${k}: ${v}`; return [ 'CLIENT', L('Name',user.name||'-'), L('Email',user.email||'-'), L('Age',user.age||'-'), L('Gender',user.gender||'-'), L('Plan',user.plan||'-'), L('Allergies',(user.allergies||[]).join(', ')||'None'), L('Priority',(user.priorities||[]).join(', ')||'-'), L('Routine',(user.routine||[]).join(', ')||'-'), L('Notes',(user.notes||'').trim()||'-'), '', 'RESULT', L('Score', m?.score??0), L('Texture',(m?.texture??0).toFixed(2)), L('Redness',(m?.redIdx??0).toFixed(2)), L('Oil Balance',(m?.oilBal??0).toFixed(2)), L('Pores',(m?.poreProb??0).toFixed(2)), L('Pigmentation',(m?.pigment??0).toFixed(2)) ].join('\n'); }
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lune Beauty – Your Luxury Experience</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body>
+  <nav class="top-nav" id="topNav">
+    <div class="nav-inner">
+      <ul class="nav-links">
+        <li><a href="#hero" data-i18n="nav.home">Home</a></li>
+        <li><a href="#services" data-i18n="nav.services">Leistungen</a></li>
+        <li><a href="#pricing" data-i18n="nav.pricing">Preise</a></li>
+        <li><a href="#team" data-i18n="nav.team">Team</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">Kontakt</a></li>
+        <li><a class="cta" href="app.html" data-i18n="nav.analysis">Skin Analysis</a></li>
+        <li class="lang-switch">
+          <button data-lang="de" aria-label="Deutsch">DE</button>
+          <button data-lang="en" aria-label="English">EN</button>
+          <button data-lang="fr" aria-label="Français">FR</button>
+        </li>
+      </ul>
+      <div class="brand brand-right">
+        <img src="assets/img/Logo.png" alt="Lune Beauty" class="brand-logo" />
+      </div>
+    </div>
+  </nav>
+
+  <header id="hero" class="hero">
+    <div class="hero-texture" aria-hidden="true"></div>
+    <div class="hero-content">
+      <img src="assets/img/Logo.png" class="hero-logo" alt="Lune Beauty" />
+      <h1 class="hero-title" data-i18n="hero.title">Lune Beauty – Your Luxury Experience</h1>
+      <p class="hero-sub" data-i18n="hero.sub">Luxuriöse Behandlungen & moderne Hautanalyse.</p>
+
+      <div class="hero-ctas">
+        <a class="gold-btn" href="app.html" data-i18n="hero.cta">Jetzt Analyse starten</a>
+        <div class="cta-quick" role="group" aria-label="Kontakt und App">
+          <a class="btn outline" href="https://wa.me/49160000000?text=Hallo%20Lune%20Beauty" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn outline" href="mailto:kontakt@lune-beauty.example?subject=Anfrage%20Lune%20Beauty&body=Hallo%20Lune%20Beauty">E‑Mail</a>
+          <a class="btn gold" href="app.html">AI Skin App</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="services" class="section services">
+    <h2 class="section-title" data-i18n="services.title">Behandlungen & Services</h2>
+    <div class="grid-3x2">
+      <article class="service-card" data-target="acc-face" tabindex="0" role="button" aria-controls="acc-face">
+        <img src="assets/img/Gesichtsbehandlung.png" alt="Gesichtsbehandlung" />
+        <h3 data-i18n="services.face.title">Gesichtsbehandlung</h3>
+        <p data-i18n="services.face.desc">Luxuriöse Pflege für ein strahlendes Hautbild.</p>
+      </article>
+      <article class="service-card" data-target="acc-body" tabindex="0" role="button" aria-controls="acc-body">
+        <img src="assets/img/Körperbehandlung.png" alt="Körperbehandlung" />
+        <h3 data-i18n="services.body.title">Körperbehandlung</h3>
+        <p data-i18n="services.body.desc">Tiefe Reinigung und verfeinernde Pflege für Rücken & Körper.</p>
+      </article>
+      <article class="service-card" data-target="acc-massage" tabindex="0" role="button" aria-controls="acc-massage">
+        <img src="assets/img/Massagen.png" alt="Massagen" />
+        <h3 data-i18n="services.massage.title">Massagen</h3>
+        <p data-i18n="services.massage.desc">Wohltuende Entspannung & Balance.</p>
+      </article>
+      <article class="service-card" data-target="acc-mani" tabindex="0" role="button" aria-controls="acc-mani">
+        <img src="assets/img/Maniküre.png" alt="Maniküre" />
+        <h3 data-i18n="services.manicure.title">Maniküre</h3>
+        <p data-i18n="services.manicure.desc">Elegante Hand- & Nagelpflege.</p>
+      </article>
+      <article class="service-card" data-target="acc-eye" tabindex="0" role="button" aria-controls="acc-eye">
+        <img src="assets/img/Augenpflege.png" alt="Augenpflege" />
+        <h3 data-i18n="services.eyes.title">Augenpflege</h3>
+        <p data-i18n="services.eyes.desc">Ausdrucksstarker Blick durch definierte Konturen.</p>
+      </article>
+      <article class="service-card" data-target="acc-feet" tabindex="0" role="button" aria-controls="acc-feet">
+        <img src="assets/img/Fußpflege.png" alt="Fußpflege" />
+        <h3 data-i18n="services.feet.title">Fußpflege</h3>
+        <p data-i18n="services.feet.desc">Intensive Pflege für gesunde, entspannte Füße.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="pricing" class="section">
+    <h2 class="section-title" data-i18n="pricing.title">Preise</h2>
+    <details id="acc-face" class="acc"><summary data-i18n="pricing.face">Gesichtsbehandlung</summary>
+      <ul class="acc-list">
+        <li><strong data-i18n="pricing.items.face.basic.title">Basis‑Gesichtsbehandlung</strong><p data-i18n="pricing.items.face.basic.desc">Sanfte Reinigung, Peeling, Maske und Pflege.</p><div class="price">65 €</div></li>
+        <li><strong data-i18n="pricing.items.face.neck.title">Gesicht + Hals & Dekolleté</strong><p data-i18n="pricing.items.face.neck.desc">Erweiterte Intensivpflege für Gesicht & Dekolleté.</p><div class="price">81 €</div></li>
+      </ul>
+    </details>
+    <details id="acc-body" class="acc"><summary data-i18n="pricing.body">Körper & Rücken</summary>
+      <ul class="acc-list">
+        <li><strong data-i18n="pricing.items.body.back.title">Kosmetische Rückenbehandlung</strong><p data-i18n="pricing.items.body.back.desc">Reinigung, Peeling und Pflege.</p><div class="price">81 €</div></li>
+      </ul>
+    </details>
+    <details id="acc-massage" class="acc"><summary data-i18n="pricing.massage">Massagen</summary>
+      <ul class="acc-list">
+        <li><strong data-i18n="pricing.items.massage.per10.title">Massage (pro angefangene 10 Min.)</strong><p data-i18n="pricing.items.massage.per10.desc">Entspannende Massageeinheit nach Bedarf.</p><div class="price">15 €</div></li>
+        <li><strong data-i18n="pricing.items.massage.a30.title">Aroma‑Massage – 30 Min.</strong><p data-i18n="pricing.items.massage.a30.desc">Harmonische Entspannung mit Aromaölen.</p><div class="price">54 €</div></li>
+        <li><strong data-i18n="pricing.items.massage.a60.title">Aroma‑Massage – 60 Min.</strong><p data-i18n="pricing.items.massage.a60.desc">Tiefenentspannende Wellnessmassage.</p><div class="price">90 €</div></li>
+      </ul>
+    </details>
+    <details id="acc-mani" class="acc"><summary data-i18n="pricing.manicure">Maniküre</summary>
+      <ul class="acc-list">
+        <li><strong data-i18n="pricing.items.mani.spa.title">Spa Maniküre</strong><p data-i18n="pricing.items.mani.spa.desc">Luxuspflege mit Peeling, Maske und Massage.</p><div class="price">40 €</div></li>
+        <li><strong data-i18n="pricing.items.mani.classic.title">Klassische Maniküre</strong><p data-i18n="pricing.items.mani.classic.desc">Nagel- und Nagelhautpflege.</p><div class="price">35 €</div></li>
+      </ul>
+    </details>
+    <details id="acc-eye" class="acc"><summary data-i18n="pricing.eyes">Augenpflege</summary>
+      <ul class="acc-list">
+        <li><strong data-i18n="pricing.items.eyes.pluck.title">Augenbrauen zupfen</strong><p data-i18n="pricing.items.eyes.pluck.desc">Präzises Formen.</p><div class="price">15 €</div></li>
+        <li><strong data-i18n="pricing.items.eyes.tintb.title">Augenbrauen färben</strong><p data-i18n="pricing.items.eyes.tintb.desc">Langanhaltende Definition.</p><div class="price">15 €</div></li>
+        <li><strong data-i18n="pricing.items.eyes.tintl.title">Wimpern färben</strong><p data-i18n="pricing.items.eyes.tintl.desc">Natürlich betont.</p><div class="price">29 €</div></li>
+      </ul>
+    </details>
+    <details id="acc-feet" class="acc"><summary data-i18n="pricing.feet">Fußpflege</summary>
+      <ul class="acc-list">
+        <li><strong data-i18n="pricing.items.feet.basic.title">Basis Fußpflege</strong><p data-i18n="pricing.items.feet.basic.desc">Nagel- & Hornhautpflege.</p><div class="price">50 €</div></li>
+        <li><strong data-i18n="pricing.items.feet.spa.title">Spa Fußpflege</strong><p data-i18n="pricing.items.feet.spa.desc">Peeling und Massage.</p><div class="price">65 €</div></li>
+        <li><strong data-i18n="pricing.items.feet.coat.title">Lackieren: Unterlack & Überlack</strong><p data-i18n="pricing.items.feet.coat.desc">Lang anhaltender Glanz.</p><div class="price">15 €</div></li>
+      </ul>
+    </details>
+  </section>
+
+  <section id="team" class="section team">
+    <h2 class="section-title" data-i18n="team.title">Unser Team</h2>
+    <p class="centered" data-i18n="team.text">Bei Lune Beauty verbinden wir moderne Hautanalyse mit zeitloser Spa‑Ästhetik.</p>
+  </section>
+
+  <section id="contact" class="section contact">
+    <h2 class="section-title" data-i18n="contact.title">Kontakt & Öffnungszeiten</h2>
+    <div class="centered">
+      <p><strong data-i18n="contact.emailL">E‑Mail:</strong> kontakt@lune-beauty.example</p>
+      <p><strong data-i18n="contact.phoneL">Telefon:</strong> +49 160 000000</p>
+      <p><strong data-i18n="contact.addrL">Adresse:</strong> Musterstraße 1, 67547 Worms</p>
+      <div class="hours">
+        <p data-i18n="contact.h1">Mo–Fr: 10–18</p>
+        <p data-i18n="contact.h2">Sa: 10–16</p>
+        <p data-i18n="contact.h3">So/Feiertage: geschlossen</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sticky CTA for mobile: (Removed phone) keep WhatsApp + Email + App -->
+  <div class="cta-sticky" role="group" aria-label="Schnellzugriff">
+    <a class="btn" href="https://wa.me/49160000000?text=Hallo%20Lune%20Beauty" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="btn" href="mailto:kontakt@lune-beauty.example?subject=Anfrage%20Lune%20Beauty&body=Hallo%20Lune%20Beauty">E‑Mail</a>
+    <a class="btn" href="app.html">AI Skin App</a>
+  </div>
+
+  <footer class="footer">© <span id="year"></span> Lune Beauty — All Rights Reserved</footer>
+
+  <script type="module" src="assets/js/i18n.js"></script>
+  <script type="module" src="assets/js/ui.js"></script>
+  <script src="assets/js/global.js"></script>
+</body>
+</html>
