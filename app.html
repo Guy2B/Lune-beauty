@@ -3,50 +3,129 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lune Beauty – AI Skin App</title>
+  <title>Lune Beauty – Premium Analyse</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/base.css" />
   <link rel="stylesheet" href="assets/css/app.css" />
 </head>
 <body>
+  <!-- STEP 1: CAMERA -->
   <div id="step1" class="step active">
     <div class="camera-wrap">
       <video id="video" playsinline autoplay muted></video>
       <div class="face-oval"></div>
       <div class="controls">
-        <button id="btnStart" class="gold-btn" data-i18n="app.start">Kamera starten</button>
-        <button id="btnFlip" class="gold-btn" style="display:none" data-i18n="app.flip">Wechseln</button>
-        <button id="btnCapture" class="gold-btn" data-i18n="app.capture">Aufnehmen</button>
+        <button id="btnStart" class="gold-btn">Kamera starten</button>
+        <button id="btnFlip" class="gold-btn" style="display:none">Wechseln</button>
+        <button id="btnCapture" class="gold-btn">Aufnehmen</button>
       </div>
     </div>
   </div>
 
+  <!-- STEP 2: PREMIUM ANALYSE FORM -->
   <div id="step2" class="step">
+    <div class="premium-card">
+      <h2 class="section-title">Premium Analyse</h2>
+      <p style="text-align:center">Wähle einen Plan und gib deine Daten ein.</p>
+
+      <div class="plan-row">
+        <label class="plan-box">
+          <input type="radio" name="planSelect" value="Plan 1 — 19€" checked>
+          <div class="p-title">Plan 1 — 19€</div>
+          <div class="p-sub">Detaillierte Analyse + 4‑Wochen‑Routine</div>
+        </label>
+        <label class="plan-box">
+          <input type="radio" name="planSelect" value="Plan 2 — 49€">
+          <div class="p-title">Plan 2 — 49€</div>
+          <div class="p-sub">Analyse + 4‑Wochen‑Routine + Empfehlungen + Nachbetreuung</div>
+        </label>
+      </div>
+
+      <div class="form-grid">
+        <div><label>Name</label><input id="p_name"></div>
+        <div><label>E‑Mail</label><input id="p_email" type="email"></div>
+        <div><label>Alter</label><input id="p_age" type="number"></div>
+        <div><label>Geschlecht</label>
+          <select id="p_gender">
+            <option value="">–</option>
+            <option>Weiblich</option>
+            <option>Männlich</option>
+            <option>Divers</option>
+          </select>
+        </div>
+      </div>
+
+      <label>Allergien (bis 3)</label>
+      <div class="tag-row" id="allergyTags">
+        <span class="tag">Keine</span>
+        <span class="tag">Parfum</span>
+        <span class="tag">Alkohol</span>
+        <span class="tag">Retinoide</span>
+        <span class="tag">AHAs/BHAs</span>
+        <span class="tag">Sonnenfilter</span>
+      </div>
+
+      <label>Priorität (bis 3)</label>
+      <div class="tag-row" id="prioTags">
+        <span class="tag">Feuchtigkeitsmangel</span>
+        <span class="tag">Hyperpigmentierung</span>
+        <span class="tag">Unreinheiten</span>
+        <span class="tag">Empfindlichkeit</span>
+        <span class="tag">Feine Linien</span>
+        <span class="tag">Textur</span>
+      </div>
+
+      <label>Aktuelle Routine</label>
+      <div class="tag-row" id="routineTags">
+        <span class="tag">Cleanser</span>
+        <span class="tag">Moisturizer</span>
+        <span class="tag">SPF</span>
+        <span class="tag">Serum</span>
+        <span class="tag">Exfoliant</span>
+        <span class="tag">Mask</span>
+        <span class="tag">Toning Treatment</span>
+        <span class="tag">Nourishing Boost</span>
+      </div>
+
+      <label>Notizen</label>
+      <textarea id="p_notes" rows="6"></textarea>
+
+      <div class="btn-row">
+        <button id="toStep3" class="gold-btn">Weiter</button>
+        <button class="btn cancel" onclick="goto('step1')">Abbrechen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: RESULT -->
+  <div id="step3" class="step">
     <div class="result-card">
-      <h2 data-i18n="app.analysis">Analyse</h2>
+      <h2>Analyse</h2>
       <div class="gauge" id="gauge"></div>
       <p id="summary"></p>
-      <button id="toStep3" class="gold-btn" data-i18n="app.continue">Weiter</button>
-    </div>
-  </div>
-
-  <div id="step3" class="step">
-    <div class="form-card">
-      <h2 data-i18n="app.details">Details</h2>
-      <label data-i18n="app.name">Name</label><input id="name" />
-      <label style="margin-top:10px" data-i18n="app.email">E‑Mail</label><input id="email" type="email" />
-      <div style="margin:14px 0">
-        <label><input type="radio" name="plan" value="Essential — 19€" checked /> <span data-i18n="app.p1">Essential — 19€</span></label>
-        <label style="margin-left:18px"><input type="radio" name="plan" value="Advanced — 49€" /> <span data-i18n="app.p2">Advanced — 49€</span></label>
-      </div>
-      <label>Prompt</label>
-      <textarea id="prompt" rows="8"></textarea>
-      <button id="submit" class="gold-btn" style="margin-top:12px" data-i18n="app.save">Speichern</button>
+      <button class="gold-btn" onclick="goto('step1')">Neu starten</button>
     </div>
   </div>
 
   <script type="module" src="assets/js/i18n.js"></script>
   <script type="module" src="assets/js/analysis.js"></script>
   <script type="module" src="assets/js/app.js"></script>
+
+  <script>
+    function enableTagLimit(containerId, max=3){
+      const row=document.getElementById(containerId);
+      row.querySelectorAll('.tag').forEach(tag=>{
+        tag.addEventListener('click',()=>{
+          if(tag.classList.contains('active')){ tag.classList.remove('active'); return; }
+          const actives=row.querySelectorAll('.tag.active');
+          if(actives.length>=max) return;
+          tag.classList.add('active');
+        });
+      });
+    }
+    enableTagLimit('allergyTags');
+    enableTagLimit('prioTags');
+    enableTagLimit('routineTags');
+  </script>
 </body>
 </html>
