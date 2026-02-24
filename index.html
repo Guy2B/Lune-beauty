@@ -36,7 +36,17 @@
       <img src="assets/img/Logo.png" class="hero-logo" alt="Lune Beauty" />
       <h1 class="hero-title" data-i18n="hero.title">Lune Beauty – Your Luxury Experience</h1>
       <p class="hero-sub" data-i18n="hero.sub">Luxuriöse Behandlungen & moderne Hautanalyse.</p>
-      <a class="gold-btn" href="app.html" data-i18n="hero.cta">Jetzt Analyse starten</a>
+
+      <!-- HERO CTAs -->
+      <div class="hero-ctas">
+        <a class="gold-btn" href="app.html" data-i18n="hero.cta">Jetzt Analyse starten</a>
+        <div class="cta-quick" role="group" aria-label="Kontakt und App">
+          <a class="btn gold" href="tel:+496100000000">Anrufen</a>
+          <a class="btn outline" href="https://wa.me/49160000000?text=Hallo%20Lune%20Beauty" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn outline" href="mailto:kontakt@lune-beauty.example?subject=Anfrage%20Lune%20Beauty&body=Hallo%20Lune%20Beauty">E‑Mail</a>
+          <a class="btn gold" href="app.html">AI Skin App</a>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -137,7 +147,16 @@
     </div>
   </section>
 
+  <!-- Sticky CTA for mobile: Phone, WhatsApp, Email, App -->
+  <div class="cta-sticky" role="group" aria-label="Schnellzugriff">
+    <a class="btn" href="tel:+496100000000">Anrufen</a>
+    <a class="btn" href="https://wa.me/49160000000?text=Hallo%20Lune%20Beauty" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="btn" href="mailto:kontakt@lune-beauty.example?subject=Anfrage%20Lune%20Beauty&body=Hallo%20Lune%20Beauty">E‑Mail</a>
+    <a class="btn" href="app.html">AI Skin App</a>
+  </div>
+
   <footer class="footer">© <span id="year"></span> Lune Beauty — All Rights Reserved</footer>
+
   <script type="module" src="assets/js/i18n.js"></script>
   <script type="module" src="assets/js/ui.js"></script>
   <script src="assets/js/global.js"></script>

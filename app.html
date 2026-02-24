@@ -9,21 +9,46 @@
   <link rel="stylesheet" href="assets/css/app.css" />
 </head>
 <body>
-  <!-- STEP 1: CAMERA -->
+  <header class="top-nav mini">
+    <div class="nav-inner">
+      <a href="index.html">← Zur Startseite</a>
+      <nav class="nav-quick">
+        <a href="app.html">App</a>
+        <a href="dashboard.html">Dashboard</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- STEP 1: CAMERA or UPLOAD -->
   <div id="step1" class="step active">
     <div class="camera-wrap">
       <video id="video" playsinline autoplay muted></video>
       <div class="face-oval"></div>
       <div class="controls">
         <button id="btnStart" class="gold-btn">Kamera starten</button>
+        <input id="fileInput" type="file" accept="image/*" style="display:none" />
+        <button id="btnUpload" class="gold-btn" type="button">Foto hochladen</button>
         <button id="btnFlip" class="gold-btn" style="display:none">Wechseln</button>
         <button id="btnCapture" class="gold-btn">Aufnehmen</button>
       </div>
     </div>
   </div>
 
-  <!-- STEP 2: PREMIUM ANALYSE FORM -->
+  <!-- STEP 2: ANALYSE RESULT -->
   <div id="step2" class="step">
+    <div class="result-card">
+      <h2>Analyse</h2>
+      <div class="gauge" id="gauge"></div>
+      <p id="summary"></p>
+      <div class="btn-row">
+        <button id="toStep3" class="gold-btn">Weiter</button>
+        <button class="btn cancel" onclick="goto('step1')">Nochmal aufnehmen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: PREMIUM FORM + SAVE -->
+  <div id="step3" class="step">
     <div class="premium-card">
       <h2 class="section-title">Premium Analyse</h2>
       <p style="text-align:center">Wähle einen Plan und gib deine Daten ein.</p>
@@ -37,14 +62,14 @@
         <label class="plan-box">
           <input type="radio" name="planSelect" value="Plan 2 — 49€">
           <div class="p-title">Plan 2 — 49€</div>
-          <div class="p-sub">Analyse + 4‑Wochen‑Routine + Empfehlungen + Nachbetreuung</div>
+          <div class="p-sub">Analyse + 4‑Wochen‑Routine + Empfehlungen + 14‑tägige Nachbetreuung</div>
         </label>
       </div>
 
       <div class="form-grid">
         <div><label>Name</label><input id="p_name"></div>
         <div><label>E‑Mail</label><input id="p_email" type="email"></div>
-        <div><label>Alter</label><input id="p_age" type="number"></div>
+        <div><label>Alter</label><input id="p_age" type="number" min="0"></div>
         <div><label>Geschlecht</label>
           <select id="p_gender">
             <option value="">–</option>
@@ -91,41 +116,16 @@
       <textarea id="p_notes" rows="6"></textarea>
 
       <div class="btn-row">
-        <button id="toStep3" class="gold-btn">Weiter</button>
+        <button id="btnSave" class="gold-btn">Speichern</button>
         <button class="btn cancel" onclick="goto('step1')">Abbrechen</button>
       </div>
-    </div>
-  </div>
 
-  <!-- STEP 3: RESULT -->
-  <div id="step3" class="step">
-    <div class="result-card">
-      <h2>Analyse</h2>
-      <div class="gauge" id="gauge"></div>
-      <p id="summary"></p>
-      <button class="gold-btn" onclick="goto('step1')">Neu starten</button>
+      <p id="payStatus" class="muted" style="margin-top:8px"></p>
     </div>
   </div>
 
   <script type="module" src="assets/js/i18n.js"></script>
   <script type="module" src="assets/js/analysis.js"></script>
   <script type="module" src="assets/js/app.js"></script>
-
-  <script>
-    function enableTagLimit(containerId, max=3){
-      const row=document.getElementById(containerId);
-      row.querySelectorAll('.tag').forEach(tag=>{
-        tag.addEventListener('click',()=>{
-          if(tag.classList.contains('active')){ tag.classList.remove('active'); return; }
-          const actives=row.querySelectorAll('.tag.active');
-          if(actives.length>=max) return;
-          tag.classList.add('active');
-        });
-      });
-    }
-    enableTagLimit('allergyTags');
-    enableTagLimit('prioTags');
-    enableTagLimit('routineTags');
-  </script>
 </body>
 </html>

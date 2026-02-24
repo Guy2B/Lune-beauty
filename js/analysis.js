@@ -1,0 +1,13 @@
+export async function analyze(img){
+  const c=document.createElement('canvas'); const w=img.naturalWidth||img.videoWidth||img.width; const h=img.naturalHeight||img.videoHeight||img.height; c.width=w; c.height=h; const ctx=c.getContext('2d'); ctx.drawImage(img,0,0,w,h);
+  const data=ctx.getImageData(0,0,w,h).data; let sumR=0,sumG=0,sumL=0,bright=0,n=0,sumSq=0; for(let i=0;i<data.length;i+=4){const r=data[i],g=data[i+1],b=data[i+2];const l=.2126*r+.7152*g+.0722*b; sumL+=l; sumSq+=l*l; sumR+=r; sumG+=g; n++; if(l>220) bright++; }
+  const meanL=sumL/n; const varL=sumSq/n-meanL*meanL; const redness=(sumR/n - sumG/n); const oil=bright/n; const poreProb=Math.min(1, Math.max(0, varL/8000)); const texture=Math.max(0, 1 - varL/12000); const redIdx=Math.min(1, Math.max(0, (redness-5)/60)); const oilBal=Math.min(1, Math.max(0, oil*5)); const pigment=Math.min(1, Math.max(0,(1-texture)*0.6+(meanL<100?0.2:0)));
+  const score=Math.round((texture*.30+(1-redIdx)*.20+(1-Math.abs(oilBal-.5)*2)*.20+(1-poreProb)*.15+(1-pigment)*.15)*100);
+  return {score, texture, redIdx, oilBal, poreProb, pigment};
+}
+
+export function gauge(el,value){ const R=100, C=2*Math.PI*R; el.innerHTML=`<svg width="240" height="240" viewBox="0 0 240 240"><circle cx="120" cy="120" r="100" stroke="#eee" stroke-width="14" fill="none"/><circle id="arc" cx="120" cy="120" r="100" stroke="var(--gold)" stroke-width="14" stroke-linecap="round" fill="none" stroke-dasharray="${C}" stroke-dashoffset="${C}"></circle></svg><div class=score>${value}</div>`; const arc=el.querySelector('#arc'); requestAnimationFrame(()=>{arc.style.transition='stroke-dashoffset .9s ease'; arc.style.strokeDashoffset=String(C*(1-value/100));}); }
+
+export function summarize(m){ return `Die Haut zeigt eine ${m.texture>0.6?'gleichmäßige':'leicht unruhige'} Textur. Rötung ist ${m.redIdx>0.5?'sichtbar':'mild'}. Der Ölhaushalt wirkt ${m.oilBal>0.55?'erhöht':(m.oilBal<0.45?'reduziert':'ausgeglichen')}. Poren sind ${m.poreProb>0.5?'betont':'fein'}; Pigmentierung ${m.pigment>0.5?'wahrscheinlich':'gering'}.`; }
+
+export function buildPromptV2(user,m){ const L=(k,v)=>`${k}: ${v}`; return [ 'CLIENT', L('Name',user.name||'-'), L('Email',user.email||'-'), L('Age',user.age||'-'), L('Gender',user.gender||'-'), L('Plan',user.plan||'-'), L('Allergies',(user.allergies||[]).join(', ')||'None'), L('Priority',(user.priorities||[]).join(', ')||'-'), L('Routine',(user.routine||[]).join(', ')||'-'), L('Notes',(user.notes||'').trim()||'-'), '', 'RESULT', L('Score', m?.score??0), L('Texture',(m?.texture??0).toFixed(2)), L('Redness',(m?.redIdx??0).toFixed(2)), L('Oil Balance',(m?.oilBal??0).toFixed(2)), L('Pores',(m?.poreProb??0).toFixed(2)), L('Pigmentation',(m?.pigment??0).toFixed(2)) ].join('\n'); }
